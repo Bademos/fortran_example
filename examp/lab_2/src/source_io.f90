@@ -31,7 +31,8 @@ contains
       character(max_len, CH_) :: string
       integer                 :: IO
 
-      ! Чтение строки во временную строку бОльшей длины.
+
+
       read (In, "(a)", iostat=IO) string
       call Handle_IO_Status(IO, "reading line from source code")
       if (IO == 0) then
@@ -65,5 +66,5 @@ contains
       call Handle_IO_Status(IO, "writing line to file")
       if (Associated(Code%next)) &
          call Output_Source_Line(Out, Code%next)
-   end subroutine Output_Source_Line
+    subroutine Output_Source_Line
 end module Source_IO 

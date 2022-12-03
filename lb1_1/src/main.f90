@@ -1,10 +1,9 @@
-! Copyright 2015 Fyodorov S. A
 
-program reference_lab_1_1
+program lab_1_1
    use Environment
 
    implicit none
-   integer, parameter               :: STUD_AMOUNT = 4, SURNAME_LEN = 15, INITIALS_LEN = 5
+   integer, parameter               :: STUD_AMOUNT = 6, SURNAME_LEN = 15, INITIALS_LEN = 5
    character(kind=CH_), parameter   :: MALE = Char(1052, CH_) !CH__"\u1052" 
 
    character(:), allocatable  :: input_file, output_file, format
@@ -29,64 +28,20 @@ program reference_lab_1_1
 
    close (In)
 
-!   Out = OUTPUT_UNIT
-!   open (Out, encoding=E_)
-!   select case(io)
-!      case(0)
-!      case(IOSTAT_END)
-!         write (Out, '(a)') "End of file has been reached while reading class list."
-!      case(1:)
-!         write (Out, '(a)') "Error while reading class list: ", io
-!      case default
-!         write (Out, '(a)') "Undetermined error has been reached while reading class list: ", io
-!   end select
-!
-call Check_Error_rd(IO)
+   
+call Check_Error_rd(IO,isRead=.true.)
 
    open (file=output_file, encoding=E_, newunit=Out)
       write (out, '(a)') "Исходный список:"
       write (Out, format, iostat=IO) (Surnames(i), Initials(i), i = 1, STUD_AMOUNT)
    close (Out)
  
-  ! Out = OUTPUT_UNIT
-  ! open (Out, encoding=E_)
-  ! select case(io)
-  !    case(0)
-  !    case(IOSTAT_END)
-  !       write (Out, '(a)') "End of file has been reached while writing class list."
-  !    case(1:)
-  !       write (Out, '(a)') "Error while writing class list: ", io
-  !    case default
-  !       write (Out, '(a)') "Undetermined error has been reached while writing class list: ", io
-  ! end select
 
-  call Check_Error_wr(IO)
+  call Check_Error_rd(IO,isRead=.false.)
 
 
- ! do i = STUD_AMOUNT, 2, -1
- !     do j = 1, i-1
- !        Swap = .false.
- !       ! Проверка на то, стоит ли менять учащихся местами.
- !           if (Surnames(j) > Surnames(j+1)) then
- !              Swap = .true.
- !           else if (All([(Surnames(j)==Surnames(j+1))]) .and. Initials(j) > Initials(j+1)) then
- !              Swap = .true.
- !           end if
-
- !        if (Swap) then
- !           tmpSurname      = Surnames(j+1)
- !           Surnames(j+1)   = Surnames(j)
- !           Surnames(j)     = tmpSurname
-
- !           tmpInitials     = Initials(j+1)
- !           Initials(j+1)   = Initials(j)
- !           Initials(j)     = tmpInitials
-
- !        end if
- !     end do
- !  end do
  
- call Sort(Surnames,Initials)
+ call Sort_ins(Surnames,Initials)
 
   open (file=output_file, encoding=E_, position='append', newunit=Out)
      write (out, '(/a)') "Ordered list:"
@@ -94,19 +49,8 @@ call Check_Error_rd(IO)
         (Surnames(i), Initials(i), i = 1, STUD_AMOUNT)
   close (Out)
   
- ! Out = OUTPUT_UNIT
- ! open (Out, encoding=E_)
- ! select case(io)
- !    case(0)
- !    case(IOSTAT_END)
- !       write (Out, '(a)') "End of file has been reached while writing sorted boys list."
- !    case(1:)
- !       write (Out, '(a)') "Error while writing sorted boys list: ", io
- !    case default
- !       write (Out, '(a)') "Undetermined error has been reached while writing sorted boys list: ", io
- ! end select
 
-  call Check_Error_wr(IO)
+  call Check_Error_rd(IO,isRead=.false.)
 
 
 contains
@@ -127,7 +71,7 @@ contains
            Swap = .false.
               if (Surnames(j) > Surnames(j+1)) then
                  Swap = .true.
-              else if (ALL([(Surnames(j)==Surnames(j+1))]) .and. Initials(j) > Initials(j+1))     then
+              else if (ALL([((Surnames(j)==Surnames(j+1)) .and. (Initials(j) > Initials(j+1)))]))     then
                  Swap = .true.
               end if
  
@@ -147,36 +91,66 @@ contains
 
    end subroutine Sort
 
-   subroutine Check_Error_wr(IO)
-      integer , intent(in) :: IO
-      integer              :: OUT = OUTPUT_UNIT
-       open (Out, encoding=E_)
-   select case(io)
-      case(0)
-      case(IOSTAT_END)
-         write (Out, '(a)') "End of file has been reached while writing  list."
-      case(1:)
-         write (Out, '(a)') "Error while writing sorted  list: ", io
-      case default
-         write (Out, '(a)') "Undetermined error has been reached while writing list: ", io
-   end select
-   end subroutine Check_Error_wr
+   subroutine Sort_ins(Surnames,Initials)
+ 
+       integer, parameter               :: STUD_AMOUNT = 6, SURNAME_LEN = 15, INITIALS_LEN = 5
+ 
+ 
+       character(SURNAME_LEN,  kind=CH_), intent(inout) :: Surnames(:)
+ 
+       character(INITIALS_LEN, kind=CH_), intent(inout) :: Initials(:)
+       integer :: i,j
+       character(INITIALS_LEN,  kind=CH_ ) :: tmpInitials
+       character(SURNAME_LEN, kind=Ch_)  :: tmpSurnames
+       logical :: Swap
+       character(SURNAME_LEN+INITIALS_LEN, kind=CH_),allocatable  :: tmp(:)
+       character(SURNAME_LEN+INITIALS_LEN, kind=CH_) :: tmpUN
+       
+       do i = 2, STUD_AMOUNT
+          tmpSurnames = Surnames(i)
+          tmpInitials = Initials(i)
+           j = i
+           
+           do while (j>1.and.((Surnames(j-1)>tmpSurnames ).or.(Surnames(j-1)==tmpSurnames).and.(Initials(j-1)>tmpInitials)))
+              
+              Surnames(j) = Surnames(j-1)
+              Initials(j) = Initials(j-1)
+               j = j-1
+                
+         end do
+         Surnames(j) = tmpSurnames
+         Initials(j) = tmpInitials
 
-   subroutine Check_Error_rd(IO)
+      end do
+ 
+ 
+   end subroutine Sort_ins
+
+   subroutine Check_Error_rd(IO,isRead)
       integer , intent(in) :: IO
+      logical , intent(in) :: isRead
       integer              :: OUT = OUTPUT_UNIT
+      character(:), allocatable :: rw
        open (Out, encoding=E_)
-   select case(io)
+  
+       if (isRead) then
+          rw = "perceiv"
+       else
+          rw = "writ"
+       end if
+
+
+    select case(io)
       case(0)
       case(IOSTAT_END)
-         write (Out, '(a)') "End of file has been reached while reading list."
+         write (Out, '(a)') "End of file has been reached while ",rw,"ing list."
       case(1:)
-         write (Out, '(a)') "Error while read list: ", io
+         write (Out, '(a)') "Error while, ",rw,"e list: ", io
       case default
-         write (Out, '(a)') "Undetermined error has been reached while reading list: ", io
+         write (Out, '(a)') "Undetermined error has been reached while ",rw,"ing list: ", io
    end select
    end subroutine Check_Error_rd
 
 
 
-end program reference_lab_1_1
+end program lab_1_1

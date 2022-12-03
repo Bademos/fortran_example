@@ -1,4 +1,4 @@
-program exercise_7_30
+program exercise_7_32
    use Environment
 
    implicit none
@@ -9,12 +9,12 @@ program exercise_7_30
    open (file=input_file, newunit=In)
       read (In, *) N, M
       allocate (A(M, N))
-      read (In, *) (A(:, i), i = 1, N)
+      read (In, *) A
    close (In)
   
    
    open (file=output_file, encoding=E_, newunit=Out)
-      write (Out, '('//M//'f6.2)') (A(:, i), i = 1, N)
+      write (Out, '('//M//'f6.2)') A
    close (Out)
    
    
@@ -66,4 +66,4 @@ contains
        end do
  end subroutine Sort
 
-end program exercise_7_30
+end program exercise_7_32

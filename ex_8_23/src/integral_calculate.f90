@@ -11,7 +11,7 @@ contains
       real(R_), intent(out)   :: I(:), P(:), X(:),Q(:), Integ(:,:)
       integer                 :: j,k
       real(R_),allocatable    :: Mask(:)
-      !real(R_)                :: Foo
+      real(R_),allocatable    :: Xin(:)
       
 
      
@@ -19,12 +19,15 @@ contains
 
       Q = [(q1 + delta_q*j,  j = 0, Size(Q))] 
 
-      X = [(a + j*h,         j = 0, Size(X)-1)]  
+      X =  [(a + j*h,         j = 1, Size(X)-1)]  
 
   !   I = [((Sum(F(P(j),Q(k), X))-(F(P(j),Q(k),[X(Size(X))])+F(P(j),Q(k),[X(1)]) )/2,     j = 1, Size(P)), k = 1,Size(Q))]
    !   I = h * I
 
-     I = [((Sum(Fun(P(j),Q(k), X))-0.5*(Fun(P(j),Q(k),X(Size(X)))+Fun(P(j),Q(k),X(1))),     j = 1, Size(P)), k = 1,Size(Q))]
+     ! Xin = X(2:Size(x)-1)
+
+
+     I = [((Sum(Fun(P(j),Q(k), X))+0.5*(Fun(P(j),Q(k),b)+Fun(P(j),Q(k),a)),     j = 1, Size(P)), k = 1,Size(Q))]
 
      I = I * h
     ! Integ = [((Sum(Fun(P(j),Q(k),X)),j=1,Size(P)),k = 1, Size(Q))]
@@ -40,12 +43,6 @@ contains
       
       F = sin(p*X)**2 / SqRt(x**X + q)
    end function F
-
-
-
-
-
-
 
   elemental real(R_)  function  Fun(p, q, x)
        real(R_)  :: p, q, x

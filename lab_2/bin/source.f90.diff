@@ -1,0 +1,16 @@
+      character(len(str)+Floor(Log10(Real(int, real64)))+1) :: res
+
+      write (res,'(i0, a)') int, str
+   end function IntPlusString
+
+   pure function StringPlusInt(str, int) result(res)
+      character(*), intent(in)                               :: str
+      integer, intent(in)                                    :: int
+      character(len(str)+Floor(Log10(Real(int, real64)))+1)  :: res
+
+      write (res,'(a, i0)') str, int
+   end function StringPlusInt
+
+end module environment
+
+! Нечто.
