@@ -1,0 +1,4 @@
+
+Исходный список:
+a++c
+ There is no error

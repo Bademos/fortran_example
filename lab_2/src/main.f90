@@ -17,15 +17,15 @@ program lab_2
    Code  => Read_Source_Code(F1)
    ! call Output_Source_Code(F2,Code)
   
-   if (Associated(Code)) then
-        call Process(Code,1,1,21)
-     if (Associated(Code)) &
-      call Output_Source_Code(F2,Code)
-   end if
+!   if (Associated(Code)) then
+!        call Process(Code,1,1,21)
+!     if (Associated(Code)) &
+!      call Output_Source_Code(F2,Code)
+!   end if
 
 ! call Process(Code,1,1,21)
-  
-! call Output_Source_Code(F2,Code)
+ call InsertionSort(Code,Code) 
+ call Output_Source_Code(F2,Code)
 
 
 

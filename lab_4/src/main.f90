@@ -9,11 +9,26 @@ program reference_lab_list
    character(:), allocatable :: input_file, output_file
    integer                   :: num_bracket = 0,pos = 1
    logical                   :: is_closed = .true.
-   integer                   :: res
+   character(:), allocatable :: res
 
    class(node), pointer   :: List => Null()
 
    input_file  = "../data/list.txt"
+   
+   input_file  = "../data/test1.txt"
+
+   input_file  = "../data/test2.txt"
+   input_file  = "../data/test1.txt"
+   input_file  = "../data/test1.txt"
+   input_file  = "../data/test1.txt"
+   input_file  = "../data/test1.txt"
+   input_file  = "../data/test1.txt"
+   input_file  = "../data/test1.txt"
+   input_file  = "../data/test1.txt"
+   input_file  = "../data/test1.txt"
+   input_file  = "../data/list.txt"
+
+
    output_file = "output.txt"
    
    List => Read_list(input_file)

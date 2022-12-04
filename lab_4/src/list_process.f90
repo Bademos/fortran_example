@@ -12,13 +12,16 @@ contains
       class(node), pointer ::           Elem
       logical , intent(inout) ::       is_closed
       integer,  intent(inout) ::       pos, num_bracket
-      !character(:), allocatable ::           res
-      integer              ::       res
+      character(:), allocatable ::           res
+      !integer              ::       res
+     
+    !  print *, "kall" // pos
+         if (pos==1) then
+         res = "norm"
+      end if
+     print *, res
      
 
-      if (pos==1)&
-         res = -1
-      
        if (Associated(Elem)) then
          select type (Elem)
             !type is (variable)
@@ -27,6 +30,7 @@ contains
             !type is (operand)
 
             type is (left_bracket)
+              print*, "HEl"
               is_closed = .false.
               num_bracket = num_bracket + 1
               
@@ -35,40 +39,42 @@ contains
                if (num_bracket == 0) then
                   is_closed = .true.
                else if (num_bracket < 0) then
-                 ! print*, " Warning! EXTRA RIGHT BRACKET!!!"
-                  res = pos
+                 res =  " Warning! EXTRA RIGHT BRACKET!!!"
+                 ! res = pos
                end if
 
 
             type is (cringe)
                if (Elem%char==" ") then
-                  print *, " Extra space!",pos
+                  res =  " Extra space!"//pos
 
-                 res = pos
+                 !res = pos
                else
-                 ! print *, " Unknown character!"
+                 res= " Unknown character!"
 
-                 res = pos
+                 !res = pos
                end if
 
          end select
+
       end if
          pos = pos + 1
          if (Associated(Elem%next)) then
+            print*, is_closed, num_bracket
             !res = Check_Next(Elem,pos)
-            if (res==-1) then
+            if (res=="norm") then
                res = Check_Next(Elem,pos)
-               if (res==-1)&
+               if (res=="norm")&
                 res =  Check(Elem%next, is_closed, pos, num_bracket)
             else
                print *, res
             end if
          else
             if (.not.is_closed) &
-              ! print *, " There is a lack of bracket"
-               res = -2
+              res =  " There is a lack of bracket"
+              ! res = -2
 
-           ! print *, is_closed, num_bracket
+            print *, is_closed, num_bracket
          end if
 
 
@@ -79,9 +85,9 @@ contains
 
       class(node), pointer ::  Elem, nxt
       integer,intent(in)   ::  pos
-     ! character(:), allocatable  :: res
-      integer::res
-      res = -1
+      character(:), allocatable  :: res
+     ! integer::res
+      res = "norm"
 
     if (Associated(Elem%next)) then
 
@@ -90,73 +96,74 @@ contains
             type is (variable)
                select type (nxt)
                   type is (variable)
-                    ! res =  "Warning! forbidded character at position.Mostlikely missing operation at "\\pos
-                    res = pos
+                     res =  "Warning! forbidded character at position.Mostlikely missing operation at "//pos
+                   ! res = pos
                   type is (operand)
 
-                     !print *, "Warning! forbidded character at position.Mostlikely missing operation in ",pos
+                     res =  "Warning! forbidded character at position.Mostlikely missing operation in "//pos
 
                   type is (left_bracket)
-                     !print *, " Operation is missed in ",pos
-                     res = pos
+                     res =  " Operation is missed in "//pos
+                     !res = pos
                end select
-             type is (operation)
+            type is (operation)
+               print*,("huy")
                  select type (nxt)
                  ! type is (variable)
                  !    print *, "Warning! forbidded character at position.Mostlikely     missing operation"
                   type is (operation)
                      if (nxt%char/='-')&
-                       ! print *, "Extra operation in ",pos
-                        res = pos
+                       res =  "Extra operation in "//pos
+                        !res = pos
 
 
                   type is (right_bracket)
-                     !print *, " Extra right bracket in",pos
+                     res =  " Extra right bracket in "//pos
 
-                 res = pos
+                 !res = pos
                end select
 
             type is (operand)
                 select type (nxt)
                    type is (variable)
-                      !print *, "Warning! forbidded character at position.Mostlikely     missing operation in ", pos
+                      res = "Warning! forbidded character at position.Mostlikely     missing operation in "//pos
 
-                 res = pos
+                 !res = pos
                    type is (operand)
  
-                     ! print *, "Warning! forbidded character at position.Mostlikely     missing operation in ",pos
+                     res = "Warning! forbidded character at position.Mostlikely     missing operation in "//pos
  
-                 res = pos
+                 !res = pos
                    type is (left_bracket)
-                      print *, " Operation is missed in", pos
+                      res = " Operation is missed in "//pos
                 end select
            type is (left_bracket)
             select type (nxt)
                    type is (operation)
                       if (nxt%char/='-')&
-                  !       print *, "Extra operation in", pos
+                           res =  "Extra operation in"// pos
  
-                 res = pos
+                 !res = pos
  
                    type is (right_bracket)
-                 !     print *, " Empty expression in ",pos
+                        res =  " Empty expression in "//pos
  
-                 res = pos
+                 !res = pos
             end select
             type is (right_bracket)
                select type (nxt)
                   type is (variable)
-                   !  print *, "Warning! forbidded character at position.Mostlikely     missing operation in ", pos
+                   res =  "Warning! forbidded character at position.Mostlikely     missing operation in "//pos
                    
-                 res = pos
+                 !res = pos
                   type is (operand)
 
-                    ! print *, "Warning! forbidded character at position.Mostlikely     missing operation in ", pos
+                    res = "Warning! forbidded character at position.Mostlikely     missing operation in "// pos
 
                   type is (left_bracket)
-                    ! print *, " Operation is missed in ", pos
+                     res =  " Operation is missed in " // pos
 
-                 res = pos
+                ! res = pos
                end select
 
            ! end select
@@ -166,7 +173,7 @@ contains
 
          end select
     end if
-         
+        print*, res 
 
    end function  Check_Next
 
