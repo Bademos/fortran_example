@@ -40,7 +40,7 @@ call Check_Error_rd(IO,isRead=.true.)
 
 
  
- call Sort_Ch(Surnames,Nums)
+ call Sort_ins(Surnames,Nums)
 
   open (file=output_file, encoding=E_, position='append', newunit=Out)
      write (out, '(/a)') "Ordered list:"
@@ -54,51 +54,41 @@ call Check_Error_rd(IO,isRead=.true.)
 
 contains
 
-   subroutine Sort_ch(Surnames,Nums)
-
-        integer, parameter               :: STUD_AMOUNT = 3, SURNAME_LEN = 14, NUMS_LEN = 10
+   subroutine Sort_ins(Surnames,Nums)
+ 
+       integer, parameter               :: STUD_AMOUNT = 3, SURNAME_LEN = 14, NUMS_LEN = 10
  
  
-        character(SURNAME_LEN,  kind=CH_), intent(inout) :: Surnames(:)
+       character(SURNAME_LEN,  kind=CH_), intent(inout) :: Surnames(:)
  
-        character(NumS_LEN, kind=CH_), intent(inout) :: Nums(:)
-        integer :: i,j,tempnum
-        character(NUMS_LEN,  kind=CH_ ) :: tmpNums
-        character(SURNAME_LEN, kind=Ch_)  :: tmpSurnames
-         logical :: Swap
- 
-        do i = 1, STUD_AMOUNT-1
-           tempnum = i
-           tmpSurnames = Surnames(i)
-           tmpNums = Nums(i)
- 
- 
-           do j=i+1, STUD_AMOUNT
+       character(NumS_LEN, kind=CH_), intent(inout) :: Nums(:)
+       integer :: i,j
+       character(NUMS_LEN,  kind=CH_ ) :: tmpNums
+       character(SURNAME_LEN, kind=Ch_)  :: tmpSurnames
+       logical :: Swap
+       character(SURNAME_LEN+NUMS_LEN, kind=CH_),allocatable  :: tmp(:)
+       character(SURNAME_LEN+NUMS_LEN, kind=CH_) :: tmpUN
+       
+       do i = 2, STUD_AMOUNT
+          tmpSurnames = Surnames(i)
+          tmpNums = Nums(i)
+           j = i
+           
+           do while (j>1.and.((Surnames(j-1)>tmpSurnames ).or.(Surnames(j-1)==tmpSurnames).and.(Nums(j-1)>tmpNums)))
               
-         swap = ((Surnames(j)<tmpSurnames ).or.(Surnames(j)==tmpSurnames).and.(Nums(j)<tmpNums))
-              if(Swap) then
-                  tempnum = j
-                  tmpSurnames = Surnames(j)
-                  tmpNums = Nums(j)
-              end if
+              Surnames(j) = Surnames(j-1)
+              Nums(j) = Nums(j-1)
+               j = j-1
+                
+         end do
+         Surnames(j) = tmpSurnames
+         Nums(j) = tmpNums
 
-
-          ! Surnames(j) = Surnames(j-1)
-           !    Nums(j) = Nums(j-1)
-            !    j = j-1
- 
-          end do
-          Surnames(tempnum) = Surnames(i)
-          Nums(tempnum) = Nums(i)
-
-
-          Surnames(i) = tmpSurnames
-          Nums(i) = tmpNums
- 
-       end do
+      end do
  
  
-    end subroutine Sort_ch
+   end subroutine Sort_ins
+
  
    
 

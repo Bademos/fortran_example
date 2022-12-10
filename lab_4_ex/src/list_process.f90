@@ -29,14 +29,12 @@ contains
 
                    type is (variable)
                       res =  "Warning! forbidded character at position.Mostlikely mi    ssing operation at "//pos
-                    ! res = pos
                    type is (operand)
  
                       res =  "Warning! forbidded character at position.Mostlikely mi    ssing operation in "//pos
  
                    type is (left_bracket)
                       res =  " Operation is missed in "//pos
-                      !res = pos
                 end select
 
               type is (operation)
@@ -104,7 +102,7 @@ contains
                     res =  " Extra space!"//pos
   
                  else
-                   res= " Unknown character!"
+                   res= "Unknown character!"
   
                  end if
   

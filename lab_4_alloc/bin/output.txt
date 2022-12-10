@@ -1,0 +1,4 @@
+
+Исходный список:
+(2+aa)
+Warning! forbidded character at position.Mostlikely mi    ssing operation at 4

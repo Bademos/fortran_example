@@ -1,4 +1,4 @@
 
 Исходный список:
-a++c
- There is no error
+a//c
+Extra operation in 2

@@ -1,6 +1,13 @@
-caca
-dada
-Boris
-Joseph
-Emmanuell
-Angela
+   end interface
+
+contains
+
+   pure function IntPlusString(int, str) result(res)
+      integer, intent(in)                                   :: int
+      character(*), intent(in)                              :: str
+      character(len(str)+Floor(Log10(Real(int, real64)))+1) :: res
+
+      write (res,'(i0, a)') int, str
+   end function IntPlusString
+
+end module environment
