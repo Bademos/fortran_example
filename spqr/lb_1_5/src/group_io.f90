@@ -139,8 +139,8 @@ contains
       format = '(2(a, 1x))'
       write (Out, format, iostat=IO) Stud%Surname, Stud%Num
       call Handle_IO_status(IO, "writing student")
-      if (Associated(Stud%next)) &
-         call Output_student(Out, Stud%next)
+     ! if (Associated(Stud%next)) &
+        ! call Output_student(Out, Stud%next)
    end subroutine Output_student
 
 

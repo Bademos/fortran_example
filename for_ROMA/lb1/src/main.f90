@@ -74,7 +74,7 @@ contains
           tmpNums = Nums(i)
            j = i
            
-           do while (j>1.and.((Surnames(j-1)>tmpSurnames ).or.(Surnames(j-1)==tmpSurnames).and.(Nums(j-1)>tmpNums)))
+           do while (j>1.and.(Nums(j-1)<tmpNums))
               
               Surnames(j) = Surnames(j-1)
               Nums(j) = Nums(j-1)

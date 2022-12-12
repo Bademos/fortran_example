@@ -44,8 +44,8 @@ call Check_Error_rd(IO,isRead=.true.)
 
   open (file=output_file, encoding=E_, position='append', newunit=Out)
      write (out, '(/a)') "Ordered list:"
-     write (Out, '(a, 1x)', iostat=IO) &
-        ( Nums(i), i = 1, STUD_AMOUNT)
+     write (Out, '(2(a, 1x))', iostat=IO) &
+        ( Surnames(i),Nums(i), i = 1, STUD_AMOUNT)
   close (Out)
   
 
@@ -102,19 +102,17 @@ contains
        character(NUMS_LEN,  kind=CH_ ) :: tmpNums
        character(SURNAME_LEN, kind=Ch_)  :: tmpSurnames
        logical :: Swap
-      ! character(SURNAME_LEN+NUMS_LEN, kind=CH_),allocatable  :: tmp(:)
-      ! character(SURNAME_LEN+NUMS_LEN, kind=CH_) :: tmpUN
        
        do i = 2, STUD_AMOUNT
           tmpSurnames = Surnames(i)
           tmpNums = Nums(i)
-           j = i-1
+           j = i
            
            do while ((Nums(j)<tmpNums))
               
-              Surnames(j) = Surnames(j)
+              Surnames(j+1) = Surnames(j)
               Nums(j+1) = Nums(j)
-              j = j
+              j = i
                 
          end do
          Surnames(j) = tmpSurnames
@@ -146,7 +144,7 @@ contains
  
            do j=i+1, STUD_AMOUNT
               
-         swap = ((Nums(j)>tmpNums))
+         swap = ((Nums(j)<tmpNums))
               if(Swap) then
                   tempnum = j
                   tmpSurnames = Surnames(j)

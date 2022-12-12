@@ -47,7 +47,7 @@ contains
          
          format = '(' // SURNAME_LEN // 'a1, 1x' // NUMS_LEN // 'a1, 1x)'
          write (Out, format, iostat=IO) &
-            (Surnames(:, i),Nums(:,i), i = 1, STUD_AMOUNT)
+            (Surnames(:, 1),Nums(:,1), i = 1, STUD_AMOUNT)
          call Handle_IO_status(IO, "writing " // List_name)
       close (Out)
    end subroutine Output_class_list
