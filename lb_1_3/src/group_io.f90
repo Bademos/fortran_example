@@ -4,7 +4,7 @@ module Group_IO
    use Environment
 
    implicit none
-   integer, parameter :: STUD_AMOUNT   = 6
+   integer, parameter :: STUD_AMOUNT   = 10000
    integer, parameter :: SURNAME_LEN   = 15
    integer, parameter :: INITIALS_LEN  = 5
    integer, parameter :: MARKS_AMOUNT  = 5

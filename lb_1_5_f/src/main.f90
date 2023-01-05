@@ -9,7 +9,7 @@ program lab_1_5
    
    type(student),pointer              :: Group_List => Null()
   ! integer                            :: N
-   input_file  = "../data/input.txt"
+   input_file  = "../data/bigdata_9500.txt"
    output_file = "output.txt"
    
    Group_List => Read_class_list(input_file)   

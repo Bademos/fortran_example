@@ -1,6 +1,6 @@
 FC=gfortran
 FFLAGS=-Wall -std=f2008ts -fimplicit-none -Wno-maybe-uninitialized -Wno-unused-function -static-libgfortran -flto
-FOPT=-O3 -ftree-vectorize -fopt-info-vec
+FOPT=-O3 -ftree-vectorize -fopt-info-vec -fmax-array-constructor=10000000
 
 all:
 	$(FC) $(FFLAGS) -c src/environment.f90 -J obj/ -o obj/environment.o

@@ -3,7 +3,7 @@ program lab_1_1
    use Environment
 
    implicit none
-   integer, parameter               :: STUD_AMOUNT = 6, SURNAME_LEN = 15, INITIALS_LEN = 5
+   integer, parameter               :: STUD_AMOUNT = 10000, SURNAME_LEN = 15, INITIALS_LEN = 5
    character(kind=CH_), parameter   :: MALE = Char(1052, CH_) !CH__"\u1052" 
 
    character(:), allocatable  :: input_file, output_file, format
@@ -17,7 +17,7 @@ program lab_1_1
    logical :: Swap
 
    
-   input_file = "../data/input.txt"
+   input_file = "../data/bigdata_1000000.txt"
    output_file = "output.txt"
 
    open (file=input_file, encoding=E_, newunit=In)
@@ -54,46 +54,47 @@ call Check_Error_rd(IO,isRead=.true.)
 
 
 contains
-    subroutine Sort(Surnames,Initials)
-      
-      integer, parameter               :: STUD_AMOUNT = 4, SURNAME_LEN = 15, INITIALS_LEN = 5
-       
+   
+!   subroutine Sort(Surnames,Initials)
+!      
+!      integer, parameter               :: STUD_AMOUNT = 100000, SURNAME_LEN = 15, INITIALS_LEN = 5
+!       
+!
+!      character(SURNAME_LEN,  kind=CH_), intent(inout) :: Surnames(:)
+!     
+!      character(INITIALS_LEN, kind=CH_), intent(inout) :: Initials(:)
+!      integer :: i,j
+!      character(SURNAME_LEN,  kind=CH_ ) :: tmpInitials
+!      character(INITIALS_LEN, kind=Ch_)  :: tmpSurnames
+!      logical :: Swap
+!      do i = STUD_AMOUNT, 2, -1
+!        do j = 1, i-1
+!           Swap = .false.
+!              if (Surnames(j) > Surnames(j+1)) then
+!                 Swap = .true.
+!              else if (ALL([((Surnames(j)==Surnames(j+1)) .and. (Initials(j) > Initials(j+1)))]))     then
+!                 Swap = .true.
+!              end if
+! 
+!           if (Swap) then
+!              tmpSurname      = Surnames(j+1)
+!              Surnames(j+1)   = Surnames(j)
+!              Surnames(j)     = tmpSurname
+! 
+!              tmpInitials     = Initials(j+1)
+!              Initials(j+1)   = Initials(j)
+!              Initials(j)     = tmpInitials
+! 
+!           end if
+!        end do
+!     end do
+!
 
-      character(SURNAME_LEN,  kind=CH_), intent(inout) :: Surnames(:)
-     
-      character(INITIALS_LEN, kind=CH_), intent(inout) :: Initials(:)
-      integer :: i,j
-      character(SURNAME_LEN,  kind=CH_ ) :: tmpInitials
-      character(INITIALS_LEN, kind=Ch_)  :: tmpSurnames
-      logical :: Swap
-      do i = STUD_AMOUNT, 2, -1
-        do j = 1, i-1
-           Swap = .false.
-              if (Surnames(j) > Surnames(j+1)) then
-                 Swap = .true.
-              else if (ALL([((Surnames(j)==Surnames(j+1)) .and. (Initials(j) > Initials(j+1)))]))     then
-                 Swap = .true.
-              end if
- 
-           if (Swap) then
-              tmpSurname      = Surnames(j+1)
-              Surnames(j+1)   = Surnames(j)
-              Surnames(j)     = tmpSurname
- 
-              tmpInitials     = Initials(j+1)
-              Initials(j+1)   = Initials(j)
-              Initials(j)     = tmpInitials
- 
-           end if
-        end do
-     end do
-
-
-   end subroutine Sort
+!   end subroutine Sort
 
    subroutine Sort_ins(Surnames,Initials)
  
-       integer, parameter               :: STUD_AMOUNT = 6, SURNAME_LEN = 15, INITIALS_LEN = 5
+       integer, parameter               :: STUD_AMOUNT = 10000, SURNAME_LEN = 15, INITIALS_LEN = 5
  
  
        character(SURNAME_LEN,  kind=CH_), intent(inout) :: Surnames(:)

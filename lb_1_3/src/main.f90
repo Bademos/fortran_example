@@ -10,15 +10,15 @@ program lab_1_3
    
    type(student)              :: Group(STUD_AMOUNT)
 
-   input_file  = "../data/input.txt"
+   input_file  = "../data/bigdata_1000000.txt"
    output_file = "output.txt"
    data_file   = "class.dat"
    
    call Create_data_file(input_file, data_file)
    
    Group = Read_class_list(data_file)
-!call Sort_ins(Group)
-  call Sort_rec(Group,2,size(Group)+1)
+call Sort_ins(Group)
+ ! call Sort_rec(Group,2,size(Group)+1)
    call Output_class_list(output_file, Group, "Исходный список:", "rewind")
 
 

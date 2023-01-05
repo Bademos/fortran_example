@@ -32,7 +32,47 @@ pure recursive subroutine Process(current, pos, from, to)
    end if
 end subroutine Process
 
+
+
+
+ recursive function Get(Item,pos) result(f_item)
+   type(SourceLine), pointer :: Item, f_item
+   integer , intent(inout)   :: pos
+
+   if(pos == 1.and.Associated(Item)) then
+      call Change(Item, "D", 6, 15, "non")
+
+      f_item => Item
+   else if(pos > 1) then
+      pos = pos - 1 
+      f_item => Get(Item%next, pos)
+   else
+      f_item => Null()
+   end if
+      
+end function Get
    
+   pure subroutine Change(Item,typ,n, m, text)
+      type(SourceLine), pointer  :: Item
+      character(*),  intent(in)  :: text, typ
+
+      character(:,CH_),allocatable  :: tmp, string
+      integer, intent(in)         :: n,m
+
+      if (typ=="D") then
+         string = Item%string
+         string = string(:n)//string(m:)
+         Item%String = string 
+      else if (typ=="I") then
+
+
+         string = Item%string
+         tmp = text
+         string = string(:n)//tmp//string(n+size(tmp):)
+      end if
+
+   end subroutine Change
+
 
 pure recursive subroutine InsertionSort(List,lastSorted)
     type(SourceLine), pointer :: List, tmp

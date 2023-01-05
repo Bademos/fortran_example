@@ -3,13 +3,13 @@ program lab_1_2
    use Environment
 
    implicit none
-   integer, parameter               :: STUD_AMOUNT = 7, SURNAME_LEN = 15, INITIALS_LEN = 5
+   integer, parameter               :: STUD_AMOUNT = 10000, SURNAME_LEN = 15, INITIALS_LEN = 5
    character(:), allocatable        :: input_file, output_file
 
    character(kind=CH_)  :: Surnames( SURNAME_LEN, STUD_AMOUNT)  = "", &
                            Initials( INITIALS_LEN, STUD_AMOUNT) = ""  
 
-   input_file  = "../data/input.txt"
+   input_file  = "../data/bigdata_1000000.txt"
    output_file = "output.txt"
    
    call Read_class_list(input_file, Surnames, Initials)
@@ -68,7 +68,7 @@ contains
 
    subroutine Sort_ins(Surnames,Initials)
 
-        integer, parameter               :: STUD_AMOUNT = 7, SURNAME_LEN = 15, INITIALS_LEN = 5
+        integer, parameter               :: STUD_AMOUNT = 10000, SURNAME_LEN = 15, INITIALS_LEN = 5
         character(kind=CH_), intent(inout)  :: Surnames( SURNAME_LEN, STUD_AMOUNT)
         character(kind=CH_), intent(inout)  :: Initials( INITIALS_LEN, STUD_AMOUNT)
         integer :: i,j
