@@ -9,5 +9,15 @@ Just for fun!
 D 11  2
 Just for f
 I 11
-uck 
-Just for fuck
+ull_stack 
+Just for full_stack
+D  1  4
+ for full_stack
+I  1
+why i  have to do that 
+why i  have to do that for full_stack
+D  5  1
+why  have to do that for full_stack
+I  5
+you 
+why you have to do that for full_stack

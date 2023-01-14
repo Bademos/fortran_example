@@ -179,7 +179,7 @@ recursive subroutine Output_com_value(Out, Com)
 ! Модуль процессов  пришлось объединить с модулем ввода/вывода так как
 !вылезала ошибка 'explicite interface required polymorphic argument'
 
- pure recursive subroutine Process(current, pos, from, num)
+ recursive subroutine Process(current, pos, from, num)
     type(symbol), pointer       :: current
     integer,intent(in)              :: pos, from, num
     integer                         :: to
@@ -189,11 +189,13 @@ recursive subroutine Output_com_value(Out, Com)
     to = from + num
 
     if(pos >= from.and.pos <= to) then
-       if (from == 1) then
+       if (from == 0) then
           tmp => current
           current => current%next
-
+          tmp%next=>null()
+            
        else
+     
        tmp => current%next
        current%next =>  current%next%next
        end if
@@ -217,13 +219,35 @@ recursive subroutine Conjuct(main_list, tail)
          end if
 end subroutine Conjuct
 
+!recursive function Conjunction(main_list, tail) result(res_list)
+ !  class(symbol), pointer:: main_list, tail, tmp, res_list
+
+
 recursive subroutine Insert(List,pos,pos_ins,sub_list)
       class(symbol), pointer :: List, sub_list, tmp
       integer, intent(in)    :: pos, pos_ins
 
+      print*, pos_ins
+      if ( pos_ins==0) then
+              tmp => list
+              call conjuct(sub_list,tmp)
+              list => sub_list
+              print *, "help!!!!!!!"
+
+      else
        if (associated(List%next).and.pos<pos_ins) then
-        Call Insert(List%next, pos+1, pos_ins, sub_list)
-     else if (pos==pos_ins) then
+       
+          if (pos_ins==0) then
+             tmp => list
+             call conjuct(sub_list,tmp)
+             list => sub_list
+             print *, "help!!!!!!!"
+          else
+             print *, "mee!!!!",pos_ins
+          Call Insert(List%next, pos+1, pos_ins, sub_list)
+          end if
+    
+       else if (pos==pos_ins) then
          if (associated(List%next)) then
              tmp => List%next
              List%next => Null()
@@ -232,7 +256,9 @@ recursive subroutine Insert(List,pos,pos_ins,sub_list)
          else
             call conjuct(list, sub_list)
          end if
-     end if
+       
+       end if
+    end if
 end subroutine Insert
 
 recursive   subroutine Exibition (Out,List, List_com)
