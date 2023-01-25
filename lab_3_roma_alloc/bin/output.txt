@@ -1,0 +1,7 @@
+
+First string:
+Tabcd
+Second string:
+That could be fun!
+Result divided set:
+htouldefn
