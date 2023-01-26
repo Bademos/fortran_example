@@ -27,160 +27,160 @@ module List_IO
    end type input
 
 contains
-   function Read_sym_list(Input_File,List_comm) result(List)
-      class(symbol), allocatable        :: List
-      class(command), allocatable ,intent(inout)      :: List_comm
-      character(*), intent(in)   :: Input_File
-      integer  In
-
-      open (file=Input_File, newunit=In)
-        call  Read_value(In,list)
-        call Read_command(In,List_comm)
-      close (In)
-   end function Read_sym_list
-
-
-   recursive subroutine Read_value(In,Elem)
-      class(symbol), allocatable  :: Elem
-      integer, intent(in)     :: In
-      integer  IO
-
-      character(kind=CH_)  :: char = ""
-      integer              :: value = 0
-      allocate(Elem)
-
-      read (In, '(a1)', iostat=IO, advance='no') char
-      if (IO == 0) then
-               Elem%char=char
-               call Read_value(In,Elem%next)
-      else
-         deallocate(Elem)
-      end if
-   end subroutine Read_value
-
-recursive subroutine Read_sym_value(hui,wrd) 
-        class(symbol), allocatable  :: wrd
-        character(*), intent(in)     :: hui
-        integer  IO 
-        
-        character(kind=CH_)  :: char = " "
-         !allocate(wrd)
-
-
-        char = hui(1:1)
-
-        if (len(hui)>0) then
-              allocate(wrd,  source=symbol(char=char))
-                 call Read_sym_value(hui(2:),wrd%next)
-        else
-           !deallocate(wrd)
-        end if
-     end subroutine Read_sym_value
-
-
-   recursive subroutine Read_command(In,Comm)
-      class(command), allocatable :: Comm
-      integer, intent(in)     :: In
-      character(kind=CH_)     :: typ
-      class(symbol), allocatable  :: symb
-      integer,parameter                 :: max_len=100
-      character(max_len)   :: third,hui
-      character(:),allocatable  :: the
-
-     integer(I_)             :: start,endl
-      integer IO
-       character(:), allocatable  :: format
- 
-       
-       allocate(Comm)
-        format = '(a1,i4,a)'
-        read (In, format, iostat=IO) typ,start,third
-         
-        if (typ=="I") then
-           ! read(third,'(a4)',iostat=IO) hui
-            the = trim(THIRD)
-           ! call Read_sym_value(the,symb)
-            
-         else if (typ=="D") then
-            read(third,'(i2)',iostat=IO) endl
-         else
-        end if
-
-        call Handle_IO_status(IO, "reading line from file")
-        if (IO == 0) then
-           if (typ=="I") then
-               allocate(Comm,source=input(start=start,symbolism=symb))
-            else if(typ=="D") then
-              allocate(Comm, source=delete(start=start, last=endl))
-
-            end if
-            call Read_command(In,Comm%next)
-        else
-           deallocate(Comm) ! не нужно
-        end if
-
-   end subroutine Read_command
-   
-   
-
-
-   subroutine Output_command(Output_File,Comm,Command_Name,Position)
-      character(*), intent(in) :: Output_File,Position, Command_Name
-      class(command),allocatable   :: Comm
-      integer                  :: Out
-         
-     open (file=Output_File, position=Position, newunit=Out)
-         write (out, '(/a)') Command_Name
-          call Output_com_value(Out, Comm)
-       close (Out)
-    end subroutine Output_command
- 
-recursive subroutine Output_com_value(Out, Com)
-       integer, intent(in)     :: Out
-       class(command), allocatable     :: Com
- 
-       integer  :: IO
- 
-       if (allocated(Com)) then
-          select type(Com)
-            type is (input)
-               write(Out, '(/a, 1x,i2)') "I",Com%start
-               call output_value(Out,Com%symbolism)
-               
-              write(Out, '(a)') " "
-            type is (delete)
-
-               write(Out, '(/a,1x,i2,1x,i2)') "D", Com%start,Com%last
-          end select
-          call Handle_IO_status(IO, "writing list")
-          call Output_com_value(Out, Com%next)
-       end if
-    end subroutine Output_com_value
-   
-
-    subroutine Output_list(Output_File, List, List_Name, Position)
-      character(*), intent(in)   :: Output_File, Position, List_Name
-      class(symbol), allocatable        :: List
-      integer  :: Out
-      
-      open (file=Output_File, position=Position, newunit=Out)
-         write (out, '(/a)') List_Name
-         call Output_value(Out, List)
-      close (Out)
-   end subroutine Output_list
-
-   recursive subroutine Output_value(Out, Elem)
-      integer, intent(in)     :: Out
-      class(symbol), allocatable     :: Elem
-      
-      integer  :: IO
-
-      if (allocated(Elem)) then 
-               write (Out, '(a1)', advance='no', iostat=IO) Elem%char 
-         call Handle_IO_status(IO, "writing list")
-         call Output_value(Out, Elem%next)
-      end if
-   end subroutine Output_value
+!   function Read_sym_list(Input_File,List_comm) result(List)
+!      class(symbol), allocatable        :: List
+!      class(command), allocatable ,intent(inout)      :: List_comm
+!      character(*), intent(in)   :: Input_File
+!      integer  In
+!
+!      open (file=Input_File, newunit=In)
+!        call  Read_value(In,list)
+!        call Read_command(In,List_comm)
+!      close (In)
+!   end function Read_sym_list
+!
+!
+!   recursive subroutine Read_value(In,Elem)
+!      class(symbol), allocatable  :: Elem
+!      integer, intent(in)     :: In
+!      integer  IO
+!
+!      character(kind=CH_)  :: char = ""
+!      integer              :: value = 0
+!      allocate(Elem)
+!
+!      read (In, '(a1)', iostat=IO, advance='no') char
+!      if (IO == 0) then
+!               Elem%char=char
+!               call Read_value(In,Elem%next)
+!      else
+!         deallocate(Elem)
+!      end if
+!   end subroutine Read_value
+!
+!recursive subroutine Read_sym_value(hui,wrd) 
+!       class(symbol), allocatable  :: wrd
+!       character(*), intent(in)     :: hui
+!       integer  IO 
+!       
+!       character(kind=CH_)  :: char = " "
+!        !allocate(wrd)
+!
+!
+!       char = hui(1:1)
+!
+!       if (len(hui)>0) then
+!             allocate(wrd,  source=symbol(char=char))
+!                call Read_sym_value(hui(2:),wrd%next)
+!       else
+!          !deallocate(wrd)
+!       end if
+!    end subroutine Read_sym_value
+!
+!
+!  recursive subroutine Read_command(In,Comm)
+!     class(command), allocatable :: Comm
+!     integer, intent(in)     :: In
+!     character(kind=CH_)     :: typ
+!     class(symbol), allocatable  :: symb
+!     integer,parameter                 :: max_len=100
+!     character(max_len)   :: third,hui
+!     character(:),allocatable  :: the
+!
+!    integer(I_)             :: start,endl
+!     integer IO
+!      character(:), allocatable  :: format
+!
+!      
+!      allocate(Comm)
+!       format = '(a1,i4,a)'
+!       read (In, format, iostat=IO) typ,start,third
+!        
+!       if (typ=="I") then
+!          ! read(third,'(a4)',iostat=IO) hui
+!           the = trim(THIRD)
+!          ! call Read_sym_value(the,symb)
+!           
+!        else if (typ=="D") then
+!           read(third,'(i2)',iostat=IO) endl
+!        else
+!       end if
+!
+!       call Handle_IO_status(IO, "reading line from file")
+!       if (IO == 0) then
+!          if (typ=="I") then
+!              allocate(Comm,source=input(start=start,symbolism=symb))
+!           else if(typ=="D") then
+!             allocate(Comm, source=delete(start=start, last=endl))
+!
+!           end if
+!           call Read_command(In,Comm%next)
+!       else
+!          deallocate(Comm) ! не нужно
+!       end if
+!
+!   end subroutine Read_command
+!   
+!   
+!
+!
+!   subroutine Output_command(Output_File,Comm,Command_Name,Position)
+!      character(*), intent(in) :: Output_File,Position, Command_Name
+!      class(command),allocatable   :: Comm
+!      integer                  :: Out
+!         
+!     open (file=Output_File, position=Position, newunit=Out)
+!         write (out, '(/a)') Command_Name
+!          call Output_com_value(Out, Comm)
+!       close (Out)
+!    end subroutine Output_command
+! 
+!recursive subroutine Output_com_value(Out, Com)
+!       integer, intent(in)     :: Out
+!       class(command), allocatable     :: Com
+! 
+!       integer  :: IO
+! 
+!       if (allocated(Com)) then
+!          select type(Com)
+!            type is (input)
+!               write(Out, '(/a, 1x,i2)') "I",Com%start
+!               call output_value(Out,Com%symbolism)
+!               
+!              write(Out, '(a)') " "
+!            type is (delete)
+!
+!               write(Out, '(/a,1x,i2,1x,i2)') "D", Com%start,Com%last
+!          end select
+!          call Handle_IO_status(IO, "writing list")
+!          call Output_com_value(Out, Com%next)
+!       end if
+!    end subroutine Output_com_value
+!   
+!
+!    subroutine Output_list(Output_File, List, List_Name, Position)
+!      character(*), intent(in)   :: Output_File, Position, List_Name
+!      class(symbol), allocatable        :: List
+!      integer  :: Out
+!      
+!      open (file=Output_File, position=Position, newunit=Out)
+!         write (out, '(/a)') List_Name
+!         call Output_value(Out, List)
+!      close (Out)
+!   end subroutine Output_list
+!
+!   recursive subroutine Output_value(Out, Elem)
+!      integer, intent(in)     :: Out
+!      class(symbol), allocatable     :: Elem
+!      
+!      integer  :: IO
+!
+!      if (allocated(Elem)) then 
+!               write (Out, '(a1)', advance='no', iostat=IO) Elem%char 
+!         call Handle_IO_status(IO, "writing list")
+!         call Output_value(Out, Elem%next)
+!      end if
+!   end subroutine Output_value
 
 
 ! Модуль процессов  пришлось объединить с модулем ввода/вывода так как

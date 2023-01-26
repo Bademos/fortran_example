@@ -8,7 +8,7 @@ program reference_lab_list
    character(:), allocatable :: input_file, output_file
    integer                   :: num_bracket = 0,pos = 1
    logical                   :: is_closed = .true.
-   character(:), allocatable :: res
+  ! character(:), allocatable :: res
 
   ! class(symbol), pointer   :: List => Null()
   ! class(command), pointer  :: List_comm => Null()
